@@ -69,7 +69,7 @@ class Link extends Command
 
                     $questionHelper = $this->getHelper('question');
                     $question = new ConfirmationQuestion(
-                        "<question>The target file '{$link->getTarget()}' exists. Overwrite it?</question> [y/N] ",
+                        "<info>The target file '{$link->getTarget()}' exists.</info> <question>Overwrite it?</question> [y/N] ",
                         false
                     );
                     if ($questionHelper->ask($input, $output, $question) === false) {
