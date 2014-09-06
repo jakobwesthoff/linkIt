@@ -14,6 +14,11 @@
         {
             "name": "autoload_*.php",
             "in": "vendor/composer"
+        },
+        {
+            "name": "*.php",
+            "exclude": ["Tests"],
+            "in": "vendor/symfony/console"
         }
     ],
     "main": "Application/linkIt.php",
