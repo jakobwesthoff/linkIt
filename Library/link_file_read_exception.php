@@ -1,4 +1,6 @@
 <?php
+namespace Westhoffswelt\LinkIt;
+
 class LinkFileReadException extends Exception
 {
     public function __construct( $file ) 

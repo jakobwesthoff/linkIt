@@ -1,4 +1,6 @@
 <?php
+namespace Westhoffswelt\LinkIt;
+
 class InvalidLinkException extends Exception
 {
     public function __construct( $linkfile, $source, $target ) 

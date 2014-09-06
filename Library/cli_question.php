@@ -1,8 +1,10 @@
 <?php
-class CliQuestion 
+namespace Westhoffswelt\LinkIt;
+
+class CliQuestion
 {
     protected $question;
-    
+
     protected $answers;
 
     protected $default;
@@ -14,17 +16,17 @@ class CliQuestion
         $this->default  = $default;
     }
 
-    public function ask() 
+    public function ask()
     {
         echo( $this->question );
-        $answer = trim( fgets( STDIN ) );
+        $answer = \trim( fgets( STDIN ) );
 
-        if ( $answer === "" ) 
+        if ( $answer === "" )
         {
             return $this->default;
         }
-        
-        if ( !$this->isValidAnswer( $answer ) ) 
+
+        if ( !$this->isValidAnswer( $answer ) )
         {
             echo "Invalid answer. Please try again.\n";
             return $this->ask();
@@ -33,13 +35,13 @@ class CliQuestion
         return $answer;
     }
 
-    protected function isValidAnswer( $answer ) 
+    protected function isValidAnswer( $answer )
     {
-        return ( array_reduce( 
-            array_map( 
-                function( $possibleAnswer ) use ( $answer ) 
+        return ( \array_reduce(
+            \array_map(
+                function( $possibleAnswer ) use ( $answer )
                 {
-                    if ( strtolower( $possibleAnswer ) == strtolower( $answer ) ) 
+                    if ( \strtolower( $possibleAnswer ) == \strtolower( $answer ) )
                     {
                         return 1;
                     }
@@ -47,7 +49,7 @@ class CliQuestion
                 },
                 $this->answers
             ),
-            function( $reduced, $current ) 
+            function( $reduced, $current )
             {
                 return $reduced + $current;
             },

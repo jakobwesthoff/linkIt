@@ -1,11 +1,8 @@
 <?php
+namespace Westhoffswelt\LinkIt;
+
 /**
  * Representation of one link entry
- * 
- * @package LinkIt 
- * @version $id$
- * @copyright 2010 Jakob Westhoff
- * @author Jakob Westhoff <jakob@php.net> 
  */
 class Link
 {
@@ -19,9 +16,9 @@ class Link
     {
         $this->parent = $parent;
 
-        if ( ( $this->source = $this->getRealSourcePath( $data[0] ) ) === false ) 
+        if ( ( $this->source = $this->getRealSourcePath( $data[0] ) ) === false )
         {
-            throw new InvalidLinkException( 
+            throw new InvalidLinkException(
                 $parent->getLinkFile()->getRealPath(),
                 $data[0],
                 $data[1]
@@ -30,53 +27,53 @@ class Link
         $this->target = $this->getRealTargetPath( $data[1] );
     }
 
-    public function getParent() 
+    public function getParent()
     {
         return $this->parent;
     }
 
-    public function getSource() 
+    public function getSource()
     {
         return $this->source;
     }
 
-    public function getTarget() 
+    public function getTarget()
     {
         return $this->target;
     }
 
-    public function realize() 
+    public function realize()
     {
-        if( file_exists( $this->target ) 
-        || !is_writable( dirname( $this->target ) ) 
-        || !symlink( $this->source, $this->target ) ) 
+        if( \file_exists( $this->target )
+        || !is_writable( dirname( $this->target ) )
+        || !symlink( $this->source, $this->target ) )
         {
             throw new LinkRealizationException( $this->source, $this->target );
         }
     }
 
-    protected function getRealSourcePath( $path ) 
+    protected function getRealSourcePath( $path )
     {
-        // The source path is most likely relative to the basepath of the 
+        // The source path is most likely relative to the basepath of the
         // linkList definition file
         $oldWorkingDirectory = getcwd();
-        chdir( $this->parent->getBasePath()->getRealPath() );
-        $source = realpath( $path );
-        chdir( $oldWorkingDirectory );
+        \chdir( $this->parent->getBasePath()->getRealPath() );
+        $source = \realpath( $path );
+        \chdir( $oldWorkingDirectory );
         return $source;
     }
 
-    protected function getRealTargetPath( $path ) 
+    protected function getRealTargetPath( $path )
     {
         /*
-         * Determining the real target path is a little bit tricky, as it is 
-         * a file which does most likely not exist yet. Therefore realpath can not 
+         * Determining the real target path is a little bit tricky, as it is
+         * a file which does most likely not exist yet. Therefore realpath can not
          * be used.
          */
 
-        // If the Path does not start with a / or ~ character it is a realative 
+        // If the Path does not start with a / or ~ character it is a realative
         // path to the link file basepath
-        if ( $path[0] !== "/" && $path[0] !== "~" ) 
+        if ( $path[0] !== "/" && $path[0] !== "~" )
         {
             $path = $this->parent->getBasePath()->getRealpath() . "/" . $path;
         }
@@ -84,35 +81,35 @@ class Link
         // Split path into segments to ease the processing
         $segments = $this->splitIntoPathSegments( $path );
 
-        // First path segment could be ~-Character, which indicates the home 
+        // First path segment could be ~-Character, which indicates the home
         // directory of the current user
-        if ( $segments[0] === "~" ) 
+        if ( $segments[0] === "~" )
         {
-            array_splice( 
+            \array_splice(
                 $segments,
                 0,
                 1,
-                $this->splitIntoPathSegments( 
-                    getenv( "HOME" )
+                $this->splitIntoPathSegments(
+                    \getenv( "HOME" )
                 )
             );
         }
 
         // Handling relative path elements (.. and .) is neccessary
-        return "/" . implode( "/", $this->canonicalizePathSegments( $segments ) );
+        return "/" . \implode( "/", $this->canonicalizePathSegments( $segments ) );
     }
 
-    protected function canonicalizePathSegments( $segments ) 
+    protected function canonicalizePathSegments( $segments )
     {
-        return array_reduce( 
+        return \array_reduce(
             $segments,
-            function( $reduced, $current ) 
+            function( $reduced, $current )
             {
                 $reduced = ( $reduced === null )
                     ? array()
                     : $reduced;
 
-                switch( $current ) 
+                switch( $current )
                 {
                     case ".":
                         // Just ignore . references
@@ -129,12 +126,12 @@ class Link
         );
     }
 
-    protected function splitIntoPathSegments( $path ) 
+    protected function splitIntoPathSegments( $path )
     {
         // Split the path into segments removing empty parts (eg. foo///bar)
-        return array_values( 
-            array_filter( 
-                explode( "/", $path ),
+        return \array_values(
+            \array_filter(
+                \explode( "/", $path ),
                 'strlen'
             )
         );

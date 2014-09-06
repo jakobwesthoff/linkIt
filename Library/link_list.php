@@ -1,76 +1,74 @@
 <?php
 /**
- * Management object providing all neccessary information and methods to handle 
+ * Management object providing all neccessary information and methods to handle
  * Files with lists of Links to be created
- * 
- * @package LinkIt 
- * @version $id$
- * @copyright 2010 Jakob Westhoff
- * @author Jakob Westhoff <jakob@php.net> 
  */
-class LinkList implements Iterator 
+
+namespace Westhoffswelt\LinkIt;
+
+class LinkList implements \Iterator
 {
     protected $linkFile;
 
     protected $list;
 
-    public function __construct( SplFileInfo $linkFile )
+    public function __construct( \SplFileInfo $linkFile )
     {
         $this->linkFile = $linkFile;
-        if ( !$linkFile->isReadable() || !$linkFile->isFile() ) 
+        if ( !$linkFile->isReadable() || !$linkFile->isFile() )
         {
             throw new LinkFileReadException( $linkFile );
         }
-        
-        $this->list = array_map( 
-            function( $line ) 
+
+        $this->list = \array_map(
+            function( $line )
             {
-                return array_map( 
+                return \array_map(
                     'trim',
-                    explode( "=>", $line, 2 )
+                    \explode( "=>", $line, 2 )
                 );
             },
-            file(
+            \file(
                 $linkFile->getRealPath()
             )
         );
     }
 
-    public function getBasePath() 
+    public function getBasePath()
     {
         return $this->linkFile->getPathInfo();
     }
 
-    public function getLinkFile() 
+    public function getLinkFile()
     {
         return $this->linkFile;
     }
 
-    public function current() 
+    public function current()
     {
-        return new Link( 
-            current( $this->list ), 
-            $this 
+        return new Link(
+            \current( $this->list ),
+            $this
         );
     }
 
-    public function key() 
+    public function key()
     {
-        return key( $this->list );
+        return \key( $this->list );
     }
 
-    public function next() 
+    public function next()
     {
-        next( $this->list );
+        \next( $this->list );
     }
 
-    public function rewind() 
+    public function rewind()
     {
-        reset( $this->list );
+        \reset( $this->list );
     }
 
-    public function valid() 
+    public function valid()
     {
-        return ( current( $this->list ) !== false );
+        return ( \current( $this->list ) !== false );
     }
 }
