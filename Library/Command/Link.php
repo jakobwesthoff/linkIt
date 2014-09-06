@@ -79,7 +79,7 @@ class Link extends Command
 
                     $output->writeln("<destructive>Removing previous instance: '{$link->getTarget()}'</destructive>");
 
-                    if (is_dir($link->getTarget())) {
+                    if (!is_link($link->getTarget()) && is_dir($link->getTarget())) {
                         $this->rmtree($link->getTarget());
                     } else {
                         \unlink($link->getTarget());
