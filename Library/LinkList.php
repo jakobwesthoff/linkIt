@@ -12,20 +12,18 @@ class LinkList implements \Iterator
 
     protected $list;
 
-    public function __construct( \SplFileInfo $linkFile )
+    public function __construct(\SplFileInfo $linkFile)
     {
         $this->linkFile = $linkFile;
-        if ( !$linkFile->isReadable() || !$linkFile->isFile() )
-        {
-            throw new LinkFileReadException( $linkFile );
+        if (!$linkFile->isReadable() || !$linkFile->isFile()) {
+            throw new Exception\LinkFileRead($linkFile);
         }
 
         $this->list = \array_map(
-            function( $line )
-            {
+            function ($line) {
                 return \array_map(
                     'trim',
-                    \explode( "=>", $line, 2 )
+                    \explode("=>", $line, 2)
                 );
             },
             \file(
@@ -47,28 +45,28 @@ class LinkList implements \Iterator
     public function current()
     {
         return new Link(
-            \current( $this->list ),
+            \current($this->list),
             $this
         );
     }
 
     public function key()
     {
-        return \key( $this->list );
+        return \key($this->list);
     }
 
     public function next()
     {
-        \next( $this->list );
+        \next($this->list);
     }
 
     public function rewind()
     {
-        \reset( $this->list );
+        \reset($this->list);
     }
 
     public function valid()
     {
-        return ( \current( $this->list ) !== false );
+        return (\current($this->list) !== false);
     }
 }

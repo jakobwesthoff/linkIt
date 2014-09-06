@@ -14,11 +14,10 @@ class LinkDefinitionFilterIterator extends \FilterIterator
     public function accept()
     {
         $file = $this->getInnerIterator()->current();
-        if ( !( $file instanceof \SplFileInfo ) )
-        {
+        if (!($file instanceof \SplFileInfo)) {
             return false;
         }
 
-        return ( $file->getBasename() == ".linkdefinition" || $file->getBasename() == "link.definition" );
+        return ($file->getBasename() == ".linkdefinition" || $file->getBasename() == "link.definition");
     }
 }
