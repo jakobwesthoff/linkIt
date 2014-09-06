@@ -19,6 +19,6 @@ class LinkDefinitionFilterIterator extends \FilterIterator
             return false;
         }
 
-        return ( $file->getBasename() == ".linkdefinition" );
+        return ( $file->getBasename() == ".linkdefinition" || $file->getBasename() == "link.definition" );
     }
 }
