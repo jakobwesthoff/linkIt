@@ -1,0 +1,22 @@
+{
+    "chmod": "0755",
+    "directories": ["Library"],
+    "files": [
+        "LICENSE",
+        "vendor/autoload.php",
+        "vendor/composer/include_paths.php",
+        "vendor/composer/ClassLoader.php",
+        "vendor/phpseclib/phpseclib/phpseclib/Crypt/Random.php",
+        "vendor/herrera-io/json/src/lib/json_version.php",
+        "vendor/herrera-io/phar-update/src/lib/constants.php"
+    ],
+    "finder": [
+        {
+            "name": "autoload_*.php",
+            "in": "vendor/composer"
+        }
+    ],
+    "main": "Application/linkIt.php",
+    "output": "Package/linkIt.phar",
+    "stub": true
+}

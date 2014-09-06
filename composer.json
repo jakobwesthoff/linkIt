@@ -1,4 +1,8 @@
 {
+    "require-dev": {
+        "kherge/box": "~2.0"
+    },
+
     "autoload": {
         "psr-4": {
             "Westhoffswelt\\LinkIt\\": "Library/"
