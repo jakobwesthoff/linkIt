@@ -36,7 +36,7 @@ class LinkIt extends Application
 }
 
 $output = new ConsoleOutput();
-$output->writeln("<comment>LinkIt (c) Jakob Westhoff</comment>");
+$output->writeln("LinkIt (c) Jakob Westhoff");
 
 try
 {

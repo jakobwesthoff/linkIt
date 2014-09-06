@@ -2,6 +2,7 @@
 namespace Westhoffswelt\LinkIt\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,6 +27,11 @@ class Link extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->getFormatter()->setStyle(
+            'destructive',
+            new OutputFormatterStyle("red")
+        );
+
         $rootDirectory = $input->getArgument("rootpath");
         if ($rootDirectory) {
             if (($rootDirectory = \realpath($rootDirectory)) === false) {
@@ -57,21 +63,21 @@ class Link extends Command
                     if (is_link($link->getTarget())
                         && readlink($link->getTarget()) === $link->getSource()
                     ) {
-                        $output->writeln("Already in place: {$link->getTarget()}. Skipping.");
+                        $output->writeln("<comment>Already in place: {$link->getTarget()}. Skipping.</comment>");
                         continue;
                     }
 
                     $questionHelper = $this->getHelper('question');
                     $question = new ConfirmationQuestion(
-                        "The target file '{$link->getTarget()}' exists. Overwrite it? [y/N] ",
+                        "<question>The target file '{$link->getTarget()}' exists. Overwrite it?</question> [y/N] ",
                         false
                     );
                     if ($questionHelper->ask($input, $output, $question) === false) {
-                        $output->writeln("Skipping: '{$link->getTarget()}'");
+                        $output->writeln("<comment>Skipping: '{$link->getTarget()}'</comment>");
                         continue;
                     }
 
-                    $output->writeln("Removing previous instance: '{$link->getTarget()}'");
+                    $output->writeln("<destructive>Removing previous instance: '{$link->getTarget()}'</destructive>");
 
                     if (is_dir($link->getTarget())) {
                         $this->rmtree($link->getTarget());
@@ -82,7 +88,7 @@ class Link extends Command
 
                 $relativeSource = \substr($link->getSource(), strlen($rootDirectory) + 1);
                 $output->writeln(
-                    "Linking: '{$relativeSource}' => '{$link->getTarget()}'"
+                    "<info>Linking: '{$relativeSource}' => '{$link->getTarget()}'</info>"
                 );
 
                 $link->realize();
